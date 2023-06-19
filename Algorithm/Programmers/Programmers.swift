@@ -81,6 +81,45 @@ class Programmers {
         }
         return filteredCnt
     }
-    //print("aaa")
-    //print(solution(["java backend junior pizza 150","python frontend senior chicken 210","python frontend senior chicken 150","cpp backend senior pizza 260","java backend junior chicken 80","python backend senior chicken 50"], ["java and backend and junior and pizza 100","python and frontend and senior and chicken 200","cpp and - and senior and pizza 250","- and backend and senior and - 150","- and - and - and chicken 100","- and - and - and - 150"]))
+    //print(solution1(["java backend junior pizza 150","python frontend senior chicken 210","python frontend senior chicken 150","cpp backend senior pizza 260","java backend junior chicken 80","python backend senior chicken 50"], ["java and backend and junior and pizza 100","python and frontend and senior and chicken 200","cpp and - and senior and pizza 250","- and backend and senior and - 150","- and - and - and chicken 100","- and - and - and - 150"]))
+    
+    
+    
+    
+    //:> 2019 KAKAO BLIND RECRUITMENT 오픈채팅방
+    /*:>
+     Lv.2
+     */
+    
+    //: 🌱solution2
+    func solution2(_ record:[String]) -> [String] {
+        
+        var usersName: [String:String] = [:]
+        var messageArr: [String] = []
+        
+        for r in record{
+            var splitR = r.split(separator: " ")
+            let status = splitR[0].description
+            let userId = splitR[1].description
+            
+            if status == "Enter"{
+                usersName[userId] = splitR[2].description
+                messageArr.append("\(userId)님이 들어왔습니다.")
+            }else if status == "Leave"{
+                messageArr.append("\(userId)님이 나갔습니다.")
+            }else{ //닉네임 변경
+                usersName[userId] = splitR[2].description
+            }
+        }
+        
+        print("usersName \(usersName)\nmessageArr \(messageArr)")
+        
+        //messageArr에 닉네임이 아닌 유저 아이디를 넣고 마지막에 대치
+        for i in 0..<messageArr.count{
+            let id = messageArr[i].split(separator: "님").first!.description
+            messageArr[i] = messageArr[i].replacingOccurrences(of: id, with: usersName[id]!)
+        }
+        
+        return messageArr
+    }
 }
