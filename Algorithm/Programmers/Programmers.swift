@@ -91,7 +91,7 @@ class Programmers {
      Lv.2
      */
     
-    //: 🌱solution2
+    //: 🌱solution2(100%)
     func solution2(_ record:[String]) -> [String] {
         
         var usersName: [String:String] = [:]
@@ -122,4 +122,147 @@ class Programmers {
         
         return messageArr
     }
+    
+    //:> 2018 KAKAO BLIND RECRUITMENT [3차] 파일명 정렬
+    /*:>
+     Lv.2
+     */
+    
+    //: 🌱solution3(65.0)
+    //3,4,5,6,7,19,20 답 실패
+    //숫자 5개까지만 가능 조건 넣었는데 똑같... 2 런타임 에러가 추가됨...
+    //공백제거 3,4,5,6(공백 문제),7,8,9(7,8,9 - 문제),19,20 (55.0%)
+    // head 다른경우에도 lowercased 로 비교 -> 6,7,8,9 오답 (80%)
+    func solution3(_ files:[String]) -> [String] {
+        
+        struct FileComponent{
+            var head: String
+            var number: String
+            var tail: String?
+            
+            
+            var fixedHead: String{
+                var str = ""
+                str = self.head.replacingOccurrences(of: ".", with: "")
+                str = str.replacingOccurrences(of: "-", with: "")
+                return str
+            }
+        }
+        
+        var files = files
+        var filesDict: [String:FileComponent] = [:]
+        
+        for str in files{
+            var firstNumIdx: Int?
+            var lastNumIdx: Int?
+            
+            let file = str.replacingOccurrences(of: " ", with: "") //공백제거
+            
+            for str in file.enumerated(){
+                
+                if str.element.isNumber{
+                    lastNumIdx = str.offset
+                    
+                    if firstNumIdx == nil{
+                        firstNumIdx = str.offset
+                    }
+                }else{
+                    if let idx = lastNumIdx{
+//                        print(":::: num start \(firstNumIdx) lastNumIdx \(lastNumIdx)")
+                        break
+                    }
+                }
+            }
+            
+            
+            if (lastNumIdx! - firstNumIdx!) >= 4{
+                lastNumIdx = firstNumIdx!+4
+            }
+            
+            
+            let numStartIdx = String.Index(encodedOffset: firstNumIdx!)
+            let numLastIdx = String.Index(encodedOffset: (lastNumIdx!+1))
+            
+            let head = file[file.startIndex..<numStartIdx]
+            let num = file[numStartIdx..<numLastIdx]
+            let tail = file[numLastIdx..<file.endIndex]
+            
+            print(":::: head \(head) num \(num) tail \(tail)")
+            
+            filesDict[str] = FileComponent(head: String(head), number: String(num), tail: String(tail))
+        }
+        
+        print("before sort \(files)")
+        
+
+        files = files.sorted(by: {filesDict[$0]!.fixedHead.lowercased() < filesDict[$1]!.fixedHead.lowercased()})
+        
+        //num sort
+        files = files.sorted(by: { first, second in
+            if filesDict[first]!.fixedHead.lowercased() == filesDict[second]!.fixedHead.lowercased(){
+                if Int(filesDict[first]!.number)! < Int(filesDict[second]!.number)!{
+                    return true
+                }else{
+                    return false
+                }
+            }else{
+                return false
+                
+                
+                
+//                if filesDict[first]!.head.lowercased() < filesDict[second]!.head.lowercased(){
+//                    return true
+//                }else{
+//                    return false
+//                }
+                
+            }
+        })
+        print("num sort \(files)")
+        
+        return files
+    }
+    
+    
+    //:> 2019 카카오 개발자 겨울 인턴십 튜플
+    /*:>
+     Lv.2
+     */
+    
+    //: 🌱solution4(100%)
+    func solution4(_ s:String) -> [Int] {
+        var tempS = removeSign(str: s)
+        var result: [Int] = []
+        
+        var splitedStrs = removeSign(str: tempS).components(separatedBy: "},{")
+//        print("splitedStrs \(splitedStrs)")
+        
+        splitedStrs.sort { first, second in
+            return first.count < second.count ? true : false
+        }
+        
+        for i in 0..<splitedStrs.count{
+            
+            var splitedInt = splitedStrs[i].components(separatedBy: ",")
+            
+            for str in splitedInt{
+                
+                print("str \(str)")
+                let value = Int(str)!
+                if !result.contains(value) {
+                    result.append(value)
+                }
+            }
+        }
+        
+        func removeSign(str: String) -> String{
+            var str = str
+            str.removeLast()
+            str.removeFirst()
+            return str
+        }
+        
+        return result
+    }
+        
 }
