@@ -39,15 +39,21 @@ final class AlgorithmTests: XCTestCase {
     }
     
     func testSolution3() throws{
-//        var s3 = Programmers().solution3(["img12.png", "img10.png", "img02.png", "img1.png", "IMG01.GIF", "img2.JPG"])
-//        XCTAssertEqual(s3, ["img1.png", "IMG01.GIF", "img02.png", "img2.JPG", "img10.png", "img12.png"])
-//        var s3 = Programmers().solution3(["F-5 Freedom Fighter", "B-50 Superfortress", "A-10 Thunderbolt II", "F-14 Tomcat"])
-//        XCTAssertEqual(s3, ["A-10 Thunderbolt II", "B-50 Superfortress", "F-5 Freedom Fighter", "F-14 Tomcat"])
-        
-        var s3 = Programmers().solution3(["abc0000123456.png", "abcde02.png", "img-12.png", "img12.png", "def01", "img1.png", "IMG01.GIF", "ABC02.JPG"])
-                XCTAssertEqual(s3, ["abc0000123456.png", "ABC02.JPG", "abcde02.png","def01","img1.png", "IMG01.GIF", "img-12.png", "img12.png"])
+//        var s3 = Programmers().solution3(["img12.png", "img10.png", "-img02.png", "img1.png", "IMG01.GIF", "img2.JPG"])
+//        XCTAssertEqual(s3, ["img1.png", "IMG01.GIF", "-img02.png", "img2.JPG", "img10.png", "img12.png"])
+        var s3 = Programmers().solution3b(["F-5 Freedom Fighter", "B-50 Superfortress", "A-10 Thunderbolt II", "F-14 Tomcat"])
+        XCTAssertEqual(s3, ["A-10 Thunderbolt II", "B-50 Superfortress", "F-5 Freedom Fighter", "F-14 Tomcat"])
+//
+//        var s3 = Programmers().solution3(["abc0000123456.png", "abcde02.png", "img-12.png", "img12.png", "def01", "img1.png", "IMG01.GIF", "ABC02.JPG"])
+//                XCTAssertEqual(s3, ["abc0000123456.png", "ABC02.JPG", "abcde02.png","def01","img1.png", "IMG01.GIF", "img-12.png", "img12.png"])
+//
+//        var s3 = Programmers().solution3(["muzi1.png1", "MUZI1.png2", "MUZI1.png3", "muzi1.png4"])
+//                XCTAssertEqual(s3, ["muzi1.png1", "MUZI1.png2", "MUZI1.png3", "muzi1.png4"])
 //        var s3 = Programmers().solution3(["foo9.txt", "foo010bar020.zip", "F-15", "MUZI01", "muzi1", "MuZi00001", "O49qcGPHuRLR5FEfoO00321"])
 //                XCTAssertEqual(s3, ["O49qcGPHuRLR5FEfoO00321", "F-15", "foo9.txt", "foo010bar020.zip", "MUZI01","muzi1", "MuZi00001"])
+        
+//        var s3 = Programmers().solution3b(["A5", "a0001", "a...0202", "a- .03", "BB2", "AAAA4"])
+//        XCTAssertEqual(s3, ["a0001", "a- .03", "AAAA4", "A5", "a...0202", "BB2",])
     }
     
     func testSolution4() throws{
@@ -56,7 +62,36 @@ final class AlgorithmTests: XCTestCase {
 //        var s4 = Programmers().solution4("{{20,111},{111}}")
 //        XCTAssertEqual(s4, [111, 20])
     }
-
+    
+    func testSolution5() throws{
+//        var s5 = Programmers().solution5(["frodo", "fradi", "crodo", "abc123", "frodoc"], ["fr*d*", "abc1**"])
+//        var s5 = Programmers().solution5(["frodo", "fradi", "crodo", "abc123", "frodoc"], ["*rodo", "*rodo", "******"])
+        var s5 = Programmers().solution5(["frodo", "fradi", "crodo", "abc123", "frodoc"], ["fr*d*", "*rodo", "******", "******"])
+        XCTAssertEqual(s5, 2)
+//        var s4 = Programmers().solution4("{{20,111},{111}}")
+//        XCTAssertEqual(s4, [111, 20])
+    }
+    
+    func testSolution6() throws{
+//        var s6 = Programmers().solution6(5, [2,1,1,1,0,0,0,0,0,0,0])
+//        XCTAssertEqual(s6, [0,2,2,0,1,0,0,0,0,0,0])
+        
+        var s6 = Programmers().solution6(1, [1,0,0,0,0,0,0,0,0,0,0])
+        XCTAssertEqual(s6, [-1])
+        
+    }
+    
+    func testSolution7() throws{
+//        var s7 = Programmers().solution7("ULURRDLLU")
+//        XCTAssertEqual(s7, 7)
+        
+//        var s7 = Programmers().solution7("LULLLLLLU")
+//        XCTAssertEqual(s7, 7)
+        
+//        var s7 = Programmers().solution7("UDU")
+//        XCTAssertEqual(s7, 1)
+        
+    }
 
     func testPerformanceExample() throws {
         // This is an example of a performance test case.

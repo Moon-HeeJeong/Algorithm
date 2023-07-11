@@ -197,6 +197,8 @@ class Programmers {
 
         files = files.sorted(by: {filesDict[$0]!.fixedHead.lowercased() < filesDict[$1]!.fixedHead.lowercased()})
         
+        print("head sort \(files)")
+        
         //num sort
         files = files.sorted(by: { first, second in
             if filesDict[first]!.fixedHead.lowercased() == filesDict[second]!.fixedHead.lowercased(){
@@ -206,21 +208,78 @@ class Programmers {
                     return false
                 }
             }else{
-                return false
                 
+//                return false
                 
-                
-//                if filesDict[first]!.head.lowercased() < filesDict[second]!.head.lowercased(){
-//                    return true
-//                }else{
-//                    return false
-//                }
+                if filesDict[first]!.head.lowercased() < filesDict[second]!.head.lowercased(){
+                    return true
+                }else{
+                    return false
+                }
                 
             }
         })
         print("num sort \(files)")
         
         return files
+    }
+    
+    //: 🌱solution3B(100.0)
+    //블로그참고
+    func solution3b(_ files:[String]) -> [String] {
+        
+        var newFiles = splitFiles(files)
+//        var sortedFile: [String] = []
+        let sortedFile = newFiles.sorted(by: { first, second in
+            if first[0].lowercased() != second[0].lowercased(){
+                return first[0].lowercased() < second[0].lowercased()
+            }else{
+                if let n1 = Int(first[1]), let n2 = Int(second[1]), n1 != n2{
+                    return n1 < n2
+                }
+            }
+            return false
+        })
+        
+        
+        print("sorted \(sortedFile)")
+        
+        return sortedFile.map({$0.joined()})
+    }
+    func splitFiles(_ files:[String]) -> [[String]]{
+        let symbol = [".", "-", " "]
+        
+        var splitFiles = [[String]]()
+        
+        for f in files{
+            var head = ""
+            var num = ""
+            var tail = ""
+            var isTail = false
+            
+            for char in f {
+                if (char.isLetter && isTail) || (isTail && symbol.contains(String(char))) || (!tail.isEmpty && char.isNumber && isTail){ //tail
+                    
+                    tail += String(char)
+                    
+                } else if char.isNumber && tail.isEmpty{ //number
+                    
+                    num += String(char)
+                    isTail = true
+                    
+                }else if (!isTail && char.isLetter) || (!isTail && symbol.contains(String(char))){ //head
+                    
+                    head += String(char)
+                }
+            }
+            
+            print("head \(head) num \(num) tail \(tail)")
+            
+            splitFiles.append([head, num, tail])
+
+        }
+        return splitFiles
+        
     }
     
     
@@ -265,4 +324,293 @@ class Programmers {
         return result
     }
         
+    //:> 2019 카카오 개발자 겨울 인턴십 불량 사용자
+    /*:>
+     Lv.2
+     */
+    func solution5(_ user_id:[String], _ banned_id:[String]) -> Int {
+        
+        let userId = user_id
+        let bannedId = banned_id
+//        var filtedId: [String] = []
+        
+        var properCnt: [Int] = []
+        
+        
+        for i in 0..<bannedId.count{
+            var filterdUserId = userId.filter({$0.count == bannedId[i].count})
+            
+            
+            print("⛔️bannedId \(bannedId[i]) filterdUserId \(filterdUserId)")
+            for j in stride(from: filterdUserId.count-1, to: 0, by: -1){
+                
+                let userStr = filterdUserId[j].enumerated()
+                
+                print("compare \(bannedId[i]) with \(filterdUserId[j])")
+                
+                for (offset, banStr) in bannedId[i].enumerated(){
+                    print("banStr \(banStr)")
+                    if banStr == "*"{
+//                        print("pass *")
+                        //패스
+                    }else if banStr != userStr.filter({$0.offset == offset}).first?.element{
+                        print("not same with \(userStr.filter({$0.offset == offset}).first?.element)")
+                        
+                        filterdUserId.remove(at: j)
+                        break
+                        //해당 userStr 삭제
+                    }else{
+                        
+                        //유지
+                    }
+                    
+                    
+                }
+                
+            }
+            print("filterd \(filterdUserId)")
+            properCnt.append(filterdUserId.count)
+        }
+        //조합을 시켜야하는디....
+        return properCnt.reduce(1, *)
+    }
+    
+    
+    //:> 2022 KAKAO BLIND RECRUITMENT 양궁대회
+    /*:>
+     Lv.2
+     */
+    func solution6(_ n:Int, _ info:[Int]) -> [Int] {
+        
+        //점수 0..10
+        //어피치 N  -> 라이언 N
+        //n: 화살갯수
+        //info: 어피치가 맞힌 과녁의 점수
+        //답: 라이언이 가장 큰 점수 차이로 우승하기 위해 어떤 과녁 점수에 맞혀야 하는지(무조건 지거나 비기는 경우 [-1])
+        
+        
+        struct ScoreDiffrentData{
+            let gap:Int
+            let isRyanWin: Bool
+        }
+        
+        func getScoreDifferent(score:[String])->ScoreDiffrentData{
+          
+            var appeachScore = 0
+            var ryanScore = 0
+            
+            for i in 0..<score.count{
+                if score[i] == "ryan"{
+                    ryanScore += (10-i)
+                }else if score[i] == "appeach"{
+                    appeachScore += (10-i)
+                }
+            }
+            print("점수차이 \(ryanScore - appeachScore)")
+            return ScoreDiffrentData(gap: ryanScore - appeachScore, isRyanWin: ryanScore > appeachScore ? true : false)
+        }
+        
+        
+        
+        var ryanInfo:[Int] = Array(repeating: 0, count: 11)
+        var isCanWin = false
+//        var scoreDifference = 0
+//        let appeachTotalValue = caculateScore(score: info)
+        
+        var winlooseScore = Array(repeating: "", count: 11)
+        
+        for maximumScore in stride(from: info.count, to: 0, by: -1){
+            print("maximum score \(maximumScore)")
+            
+            var shootArrowCnt = 0
+            var tempRyanInfo:[Int] = Array(repeating: 0, count: 11)
+            var tempWinlooseScore = Array(repeating: "", count: 11)
+            
+            for i in 0..<info.count{
+                
+                print("\((11-maximumScore)) 값 부터 탐색")
+                
+//                guard shootArrowCnt < n else{
+//                    break
+//                }
+                
+                let score = 10-i //과녁 점수
+                let arrowCnt = info[i] //어피치가 맞힌 화살 갯수
+                
+                if i >= (11-maximumScore){
+                   
+                    
+                    if shootArrowCnt > n && arrowCnt > 0{
+                        tempWinlooseScore[i] = "appeach"
+                    }
+                    
+                    var canShootArrow = arrowCnt + 1
+                    if  shootArrowCnt + canShootArrow > n {//화살 n개 안넘는지 확인
+                        
+                        canShootArrow = n-shootArrowCnt//abs(canShootArrow - shootArrowCnt)
+                        
+                        if canShootArrow > arrowCnt { //어피치한테 이길 수 있는지 확인
+                            //이긴다
+                            shootArrowCnt += canShootArrow
+                            tempRyanInfo[i] = canShootArrow
+                            
+                            tempWinlooseScore[i] = "ryan"
+                        }else{
+                            //진다
+                            if arrowCnt > 0{
+                                tempWinlooseScore[i] = "appeach"
+                            }
+                            //비긴다
+                        }
+                    }else{
+                        shootArrowCnt += canShootArrow
+                        tempRyanInfo[i] = canShootArrow
+                        
+                        tempWinlooseScore[i] = "ryan"
+                    }
+                    
+                }else{
+                    if arrowCnt > 0{
+                        tempWinlooseScore[i] = "appeach"
+                    }
+                }
+            }
+            
+            print("tempRyanInfo ::: \(tempRyanInfo)")
+//            print("caculateScore ryanInfo \(caculateScore(score: ryanInfo)) ScoreDifferent \(getScoreDifferent(score: winlooseScore)) tempRyanInfo \(caculateScore(score: tempRyanInfo)) ScoreDifferent \(getScoreDifferent(score: tempWinlooseScore))")
+            
+//            ryanInfo = caculateScore(score: ryanInfo) - appeachTotalValue > caculateScore(score: tempRyanInfo) - appeachTotalValue ? ryanInfo : tempRyanInfo
+            
+            if maximumScore == info.count{
+//                let newScore = getScoreDifferent(score: tempWinlooseScore)
+                
+                ryanInfo = tempRyanInfo
+                winlooseScore = tempWinlooseScore
+            }else{
+                let beforeScore = getScoreDifferent(score: winlooseScore)
+                let newScore = getScoreDifferent(score: tempWinlooseScore)
+                
+                if beforeScore.gap < newScore.gap{
+                    ryanInfo = tempRyanInfo
+                    winlooseScore = tempWinlooseScore
+                }
+                
+                if newScore.isRyanWin || beforeScore.isRyanWin{
+                    isCanWin = true
+                }
+            }
+            
+//            ryanInfo = getScoreDifferent(score: winlooseScore) > getScoreDifferent(score: tempWinlooseScore) ? ryanInfo : tempRyanInfo
+            
+            print("apeach ::: \(info) ryan ::: \(ryanInfo)")
+            
+        }
+        return isCanWin ? ryanInfo : [-1]
+    }
+    
+    //:> Summer/Winter Coding(~2018) 방문 길이
+    /*:>
+     Lv.2
+     */
+    
+    //: 🌱solution7 (35% -> 100%)
+    //8 ~ 20 실패 -> 같은 경로를 쓰는 경우 체크해주기 UDU 의 경우
+    func solution7(_ dirs:String) -> Int {
+        
+        enum MovingType: String{
+            case up = "U"
+            case down = "D"
+            case right = "R"
+            case left = "L"
+            
+            var move: [Int] {
+                switch self {
+                case .up:
+                    return [0,1]
+                case .down:
+                    return [0,-1]
+                case .right:
+                    return [1,0]
+                case .left:
+                    return [-1,0]
+                }
+            }
+            
+            var reverseDir: MovingType{
+                switch self {
+                case .up:
+                    return .down
+                case .down:
+                    return .up
+                case .right:
+                    return .left
+                case .left:
+                    return .right
+                }
+            }
+        }
+        
+        struct CoodinateType: Hashable{
+            var xPos: Int
+            var yPos: Int
+            var dir: MovingType
+        }
+        
+        var directions: [MovingType] = []
+        var currentPos: [Int] = [0,0]
+        var coordinate: [CoodinateType:Bool] = [:]
+        
+        var maxRange = 5
+        
+        var movingDistance = 0
+        
+        for i in 0..<maxRange*2+1{
+            for j in 0..<maxRange*2+1{
+                var xValue = i > maxRange ? maxRange-i : i
+                var yValue = j > maxRange ? maxRange-j : j
+                
+                coordinate[CoodinateType(xPos: xValue, yPos: yValue, dir: .up)] = false
+                coordinate[CoodinateType(xPos: xValue, yPos: yValue, dir: .down)] = false
+                coordinate[CoodinateType(xPos: xValue, yPos: yValue, dir: .left)] = false
+                coordinate[CoodinateType(xPos: xValue, yPos: yValue, dir: .right)] = false
+            }
+        }
+        
+        for str in dirs.enumerated(){
+            directions.append(MovingType(rawValue: str.element.description)!)
+        }
+        for i in 0..<directions.count{
+            let dir = directions[i]
+            
+            //if 범위 넘어가면 무시 //이미 지나간 곳은 cnt no
+            
+            var destinationX = currentPos[0] + dir.move.first!
+            var destinationY = currentPos[1] + dir.move.last!
+            
+            
+            if abs(destinationX) <= 5 && abs(destinationY) <= 5{ //좌표 범위 넘어가지 않는 내에서
+                
+                if !coordinate[CoodinateType(xPos: currentPos[0], yPos: currentPos[1], dir: dir)]!{
+                    coordinate[CoodinateType(xPos: currentPos[0], yPos: currentPos[1], dir: dir)] = true
+                    
+                    movingDistance += 1
+                    
+                    print("\(i+1). 지나간적 없는 길 x \(destinationX) y \(destinationY) dir \(dir)")
+                    
+                    //같은 경로를 쓰는 경우 체크
+                    coordinate[CoodinateType(xPos: destinationX, yPos: destinationY, dir: dir.reverseDir)] = true
+                    
+                }else{
+                    print("\(i+1). 😈 지나간적 있음! x \(destinationX) y \(destinationY) dir \(directions[i])")
+                }
+                
+                currentPos[0] = destinationX
+                currentPos[1] = destinationY
+            }
+            
+            print("current pos \(currentPos)")
+        }
+        
+        return movingDistance
+    }
 }
