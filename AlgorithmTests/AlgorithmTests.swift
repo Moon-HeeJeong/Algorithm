@@ -92,6 +92,11 @@ final class AlgorithmTests: XCTestCase {
 //        XCTAssertEqual(s7, 1)
         
     }
+    
+    func testSolution8() throws{
+        var s8 = Programmers().solution8("KAKAO")
+        XCTAssertEqual(s8, [11, 1, 27, 15])
+    }
 
     func testPerformanceExample() throws {
         // This is an example of a performance test case.

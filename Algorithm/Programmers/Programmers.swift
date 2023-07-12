@@ -613,4 +613,39 @@ class Programmers {
         
         return movingDistance
     }
+    
+    //2018 KAKAO BLIND RECRUITMENT [3차] 압축
+    //: 🌱solution8 (100%)
+    func solution8(_ msg:String) -> [Int] {
+        
+        var wordDictionary = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+        var searchNums: [Int] = []
+        var beforeStr: String = ""
+    
+        for msgStr in msg.enumerated(){
+            let msgElement = msgStr.element.description
+            let newStr = beforeStr + msgElement
+            
+            if let dictStr = wordDictionary.firstIndex(of: newStr){  //값이 있으면 그 다음을 더한 값까지 있는지 확인하기 위해 계속 값 더하기
+                beforeStr = newStr
+            }else{ //값이 없으면 그 이전까지의 값을 찾음
+                 
+                if let otherDictStr = wordDictionary.firstIndex(of: beforeStr.count > 0 ? beforeStr : msgElement){
+                    searchNums.append(otherDictStr+1)
+                }
+                
+                wordDictionary.append(newStr)
+                beforeStr = msgElement
+            }
+            
+            //마지막 값이면 현재 나온 값까지 색인 값 구하기
+            if msgStr.offset == msg.count-1{
+                if let lastStr = wordDictionary.firstIndex(of: beforeStr){
+                    searchNums.append(lastStr+1)
+                }
+            }
+        }
+        print("searchNum \(searchNums)")
+        return searchNums
+    }
 }
