@@ -648,4 +648,253 @@ class Programmers {
         print("searchNum \(searchNums)")
         return searchNums
     }
+    
+    //2021 카카오 채용연계형 인턴십 거리두기 확인하기
+    //: 🌱solution9
+    func solution9(_ places:[[String]]) -> [Int] {
+        
+        var result: [Int] = []
+        
+        struct PosType{
+            let row: Int
+            let column: Int
+            
+            var printValue: String{
+                "\(row), \(column)"
+            }
+        }
+        
+        
+        for i in 0..<places.count{ //5번 돌고
+            var personPos: [PosType] = []
+            var partitionPos: [PosType] = []
+            print("i\(i) places \(places[i])")
+            for j in 0..<places[i].count{
+                let thisRowSeat = places[i][j].enumerated()
+                
+                let pOffsets = thisRowSeat.filter({$0.element == "P"}).map({$0.offset}) //index(of: "P")
+//                print("i\(i)j\(j) \(places[i][j]) 에서 P가 있는 OFFSET \(pOffsets)")
+                
+                let xOffsets = thisRowSeat.filter({$0.element == "X"}).map({$0.offset})
+                
+                
+                for offset in pOffsets { //최대 5번
+                    personPos.append(PosType(row: j, column: offset))
+                }
+                
+                for offset in xOffsets { //최대 5번
+                    partitionPos.append(PosType(row: j, column: offset))
+                }
+            }
+            
+//            print("i\(i)_person pos \(personPos.map({$0.printValue}))")
+        
+           
+            var isDistanceOK = true
+            if personPos.count > 2{
+                for j in 0..<personPos.count-2{
+                    let first = personPos[j]
+                    let second = personPos[j+1]
+                    if checkDistanceOK(twoPos: [first,second]){
+                        
+                    }else{
+                        //거리에 따른 거리두기가 false라면 파티션이 있는지 확인
+                        print("\(first) 와 \(second) 의 거리두기가 실패했다... 파티션 체크하자")
+                        if first.row == second.row{
+                            if partitionPos.filter({$0.row == first.row && $0.column == first.column+1}).count == 0{
+                                
+                                isDistanceOK = false
+                                break
+                            }else{
+                                print("\(first.row), \(first.column+1)에 파티션 있음")
+                            }
+                        }else if first.column == second.column{
+                            if partitionPos.filter({$0.column == first.column && $0.row == first.row+1}).count == 0{
+                                
+                                isDistanceOK = false
+                                break
+                            }else{
+                                print("\(first.column), \(first.row+1)에 파티션 있음")
+                            }
+                        }else{
+                            
+                            
+                            print("실패")
+                            isDistanceOK = false
+                            break
+                        }
+                        
+                    }
+                }
+            }
+            print("\(i)번째 방 거리두기 \(isDistanceOK)")
+            result.append(isDistanceOK ? 1:0)
+        }
+        
+        
+        func checkDistanceOK(twoPos:[PosType])->Bool{
+            let first = twoPos.first
+            let second = twoPos.last
+            
+            //거리 2이하 거리두기 false
+            if abs(first!.column - second!.column) <= 2 && abs(first!.row - second!.row) <= 2{
+                return false
+            }
+            return true
+        }
+        
+        
+        return result
+    }
+    
+    
+    //월간 코드 챌린지 시즌2 괄호 회전하기
+    //: 🌱solution10
+    //21.4% ㅠ (11~13 빼고 1~14 실패) -> 반례 {{{} , 0 -> 92.9% (14 실패) -> 반례 {(}) , 0 -> solution10ver2
+    func checkRight(rotated : [SignKind])->Bool{
+        
+        var isBigStart: [Bool] = []
+        var isMidStart: [Bool] = []
+        var isSmallStart: [Bool] = []
+        
+        
+        
+        for i in 0..<rotated.count{
+            
+            let parenthesis = rotated[i]
+            print("current \(parenthesis)")
+            if parenthesis.isStart{
+                switch parenthesis{
+                case .bigStart, .bigEnd:
+                    isBigStart.append(true)
+                    break
+                case .midStart, .midEnd:
+                    isMidStart.append(true)
+                    break
+                case .smallStart, .smallEnd:
+                    isSmallStart.append(true)
+                    break
+                }
+            }else{
+                if parenthesis == .bigStart || parenthesis == .bigEnd{
+                    
+                    let startIdx = isBigStart.firstIndex(of: true)
+                    if let idx = startIdx{
+                        isBigStart[idx] = false
+                    }else{ //시작하지않았는데 끝난 경우
+                        return false
+                    }
+                }else if parenthesis == .midStart || parenthesis == .midEnd{
+                    let startIdx = isMidStart.firstIndex(of: true)
+                    if let idx = startIdx{
+                        isMidStart[idx] = false
+                    }else{
+                        return false
+                    }
+                }else{
+                    let startIdx = isSmallStart.firstIndex(of: true)
+                    if let idx = startIdx{
+                        isSmallStart[idx] = false
+                    }else{
+                        return false
+                    }
+                }
+            }
+        }
+        
+        //괄호 안닫힌게 있으면 false 리턴
+        return isBigStart.filter({$0 == true}).count > 0 || isMidStart.filter({$0 == true}).count > 0 || isSmallStart.filter({$0 == true}).count > 0 ? false : true
+    }
+    enum SignKind: String{
+        case bigStart = "["
+        case bigEnd = "]"
+        case midStart = "{"
+        case midEnd = "}"
+        case smallStart = "("
+        case smallEnd = ")"
+        
+        var isStart: Bool{
+            switch self {
+            case .bigStart, .midStart, .smallStart:
+                return true
+            default:
+                return false
+            }
+        }
+    }
+    
+    func solution10(_ s:String) -> Int {
+        
+        var rotated : [SignKind] = []
+        var rightCnt = 0
+        
+        for str in s.enumerated(){
+            rotated.append(SignKind(rawValue: String(str.element))!)
+        }
+        
+        for i in 0..<rotated.count{
+            
+            rotated.append(rotated.first!)
+            rotated.removeFirst()
+            
+            
+            
+            rightCnt += checkRight(rotated: rotated) == true ? 1:0
+            
+            print("is Right \(checkRight(rotated: rotated))")
+        }
+        
+        return rightCnt
+    }
+    
+    //: 🌱solution10ver2 (100%)
+    func solution10ver2(_ s:String) -> Int {
+        
+        var rotated : String = ""
+        var rightCnt = 0
+        
+        for str in s.enumerated(){
+            rotated.append(String(str.element))
+        }
+        
+        for i in 0..<rotated.count{
+            
+            rotated += rotated.first!.description
+            rotated.removeFirst()
+            print(":::::rotated \(rotated)")
+            rightCnt += checkRightVer2(rotated: rotated) == true ? 1:0
+            
+            print("is Right \(checkRightVer2(rotated: rotated))")
+        }
+        
+        return rightCnt
+    }
+    enum SignVer2Kind: String{
+        case big = "[]"
+        case mid = "{}"
+        case small = "()"
+    }
+    
+    func checkRightVer2(rotated : String)->Bool{
+        
+        
+        var tempStr = ""//rotated
+        var popStr = rotated
+        
+        while tempStr != popStr{
+            print("tempStr \(tempStr) popStr \(popStr)")
+            
+            tempStr = popStr
+            
+            popStr = popStr.replacingOccurrences(of: SignVer2Kind.big.rawValue, with: "")
+            popStr = popStr.replacingOccurrences(of: SignVer2Kind.mid.rawValue, with: "")
+            popStr = popStr.replacingOccurrences(of: SignVer2Kind.small.rawValue, with: "")
+            
+            
+            print("result popStr \(popStr)")
+        }
+        
+        return tempStr.count > 0 ? false : true
+    }
+        
 }

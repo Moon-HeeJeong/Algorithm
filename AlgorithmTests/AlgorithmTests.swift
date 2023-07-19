@@ -97,6 +97,28 @@ final class AlgorithmTests: XCTestCase {
         var s8 = Programmers().solution8("KAKAO")
         XCTAssertEqual(s8, [11, 1, 27, 15])
     }
+    
+    func testSolution9() throws{
+        var s9 = Programmers().solution9([["POOOP", "OXXOX", "OPXPX", "OOXOX", "POXXP"], ["POOPX", "OXPXP", "PXXXO", "OXXXO", "OOOPP"], ["PXOPX", "OXOXP", "OXPOX", "OXXOP", "PXPOX"], ["OOOXX", "XOOOX", "OOOXX", "OXOOX", "OOOOO"], ["PXPXP", "XPXPX", "PXPXP", "XPXPX", "PXPXP"]])
+        XCTAssertEqual(s9, [1, 0, 1, 1, 1])
+    }
+    
+    func testSolution10() throws{
+//        var s10 = Programmers().solution10("[](){}")
+//        XCTAssertEqual(s10, 3)
+//
+//                var s10 = Programmers().solution10ver2("[](){}")
+//                XCTAssertEqual(s10, 3)
+        
+//        var s10 = Programmers().solution10("[)(]")
+//        XCTAssertEqual(s10, 0)
+        
+        
+//        var s10 = Programmers().solution10("{{{}")
+//        XCTAssertEqual(s10, 0)
+//        var s10 = Programmers().solution10("{(})")
+//        XCTAssertEqual(s10, 0)
+    }
 
     func testPerformanceExample() throws {
         // This is an example of a performance test case.
