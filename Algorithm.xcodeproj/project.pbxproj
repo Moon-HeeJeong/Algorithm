@@ -11,6 +11,8 @@
 		D94546BA2A3BEF6F00338492 /* AlgorithmTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D94546B92A3BEF6F00338492 /* AlgorithmTests.swift */; };
 		D94546C32A3BF08F00338492 /* Programmers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D94546C22A3BF08F00338492 /* Programmers.swift */; };
 		D94546C42A3BF08F00338492 /* Programmers.swift in Sources */ = {isa = PBXBuildFile; fileRef = D94546C22A3BF08F00338492 /* Programmers.swift */; };
+		D9DD801B2A808A380050727F /* AlgorithmClass1.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9DD801A2A808A380050727F /* AlgorithmClass1.swift */; };
+		D9DD801C2A808A380050727F /* AlgorithmClass1.swift in Sources */ = {isa = PBXBuildFile; fileRef = D9DD801A2A808A380050727F /* AlgorithmClass1.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -31,6 +33,7 @@
 		D94546B72A3BEF6F00338492 /* AlgorithmTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AlgorithmTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D94546B92A3BEF6F00338492 /* AlgorithmTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorithmTests.swift; sourceTree = "<group>"; };
 		D94546C22A3BF08F00338492 /* Programmers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Programmers.swift; sourceTree = "<group>"; };
+		D9DD801A2A808A380050727F /* AlgorithmClass1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlgorithmClass1.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +75,7 @@
 		D94546AA2A3BEF4300338492 /* Algorithm */ = {
 			isa = PBXGroup;
 			children = (
+				D9DD801D2A808A3C0050727F /* AlgorithmClass */,
 				D94546B22A3BEF4C00338492 /* Programmers */,
 				D94546AB2A3BEF4300338492 /* main.swift */,
 			);
@@ -81,6 +85,7 @@
 		D94546B22A3BEF4C00338492 /* Programmers */ = {
 			isa = PBXGroup;
 			children = (
+				D9DD801A2A808A380050727F /* AlgorithmClass1.swift */,
 				D94546C22A3BF08F00338492 /* Programmers.swift */,
 			);
 			path = Programmers;
@@ -92,6 +97,13 @@
 				D94546B92A3BEF6F00338492 /* AlgorithmTests.swift */,
 			);
 			path = AlgorithmTests;
+			sourceTree = "<group>";
+		};
+		D9DD801D2A808A3C0050727F /* AlgorithmClass */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = AlgorithmClass;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -183,6 +195,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D9DD801B2A808A380050727F /* AlgorithmClass1.swift in Sources */,
 				D94546C32A3BF08F00338492 /* Programmers.swift in Sources */,
 				D94546AC2A3BEF4300338492 /* main.swift in Sources */,
 			);
@@ -192,6 +205,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D9DD801C2A808A380050727F /* AlgorithmClass1.swift in Sources */,
 				D94546C42A3BF08F00338492 /* Programmers.swift in Sources */,
 				D94546BA2A3BEF6F00338492 /* AlgorithmTests.swift in Sources */,
 			);

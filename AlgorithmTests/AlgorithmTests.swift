@@ -126,5 +126,21 @@ final class AlgorithmTests: XCTestCase {
             // Put the code you want to measure the time of here.
         }
     }
+    
+    
+    
+    //알고리즘 클래스
+    
+    //완전탐색, <직사각형>
+    func testSolutionA() throws{
+        var sA = AlgorithmClass1().solutionA([[60, 50], [30, 70], [60, 30], [80, 40]])
+        XCTAssertEqual(sA, 4000)
+    }
+    
+    //탐욕법, <체육복>
+    func testSolutionB() throws{
+        var sB = AlgorithmClass1().solutionB(5, [2, 4], [1, 3, 5])
+        XCTAssertEqual(sB, 5)
+    }
 
 }
